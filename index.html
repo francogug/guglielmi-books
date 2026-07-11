@@ -416,7 +416,10 @@
     </section>
 
     <section class="review" id="panel">
-      <form class="form-card" id="review-form">
+      <form class="form-card" id="review-form" action="https://formsubmit.co/francogugliemi@gmail.com" method="POST">
+        <input type="hidden" name="_subject" value="Nueva reseña - Guglielmi Books">
+        <input type="hidden" name="_template" value="table">
+        <input type="hidden" name="_captcha" value="false">
 
         <div class="form-head">
           <h2>Escribi tu rese&ntilde;a</h2>
@@ -485,7 +488,7 @@
     form.addEventListener('input', update);
     form.addEventListener('change', update);
 
-    form.addEventListener('submit', function (event) {
+    form.addEventListener('submit', async function (event) {
       event.preventDefault();
       const hasRating = Boolean(rating());
       const hasText = review.value.trim().length >= 10;
@@ -496,8 +499,32 @@
         return;
       }
 
-      panel.classList.add('sent');
-      thanks.focus();
+      submit.disabled = true;
+      submit.textContent = 'Enviando...';
+      statusText.textContent = 'Enviando reseña...';
+
+      const formData = new FormData(form);
+
+      try {
+        const response = await fetch('https://formsubmit.co/ajax/francogugliemi@gmail.com', {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json'
+          },
+          body: formData
+        });
+
+        if (!response.ok) {
+          throw new Error('No se pudo enviar');
+        }
+
+        panel.classList.add('sent');
+        thanks.focus();
+      } catch (error) {
+        statusText.textContent = 'No pudimos enviarla. Revisa tu conexion e intenta nuevamente.';
+        submit.textContent = 'Publicar resena';
+        update();
+      }
     });
 
     again.addEventListener('click', function () {
