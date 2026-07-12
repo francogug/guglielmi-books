@@ -455,6 +455,12 @@
         </div>
 
         <div>
+          <label for="book">Titulo del libro</label>
+          <input type="text" id="book" name="book" maxlength="120" required placeholder="Escribi el titulo del libro..." aria-describedby="book-error">
+          <div class="meta"><span class="error" id="book-error" role="alert"></span></div>
+        </div>
+
+        <div>
           <label for="review">Tu opinion</label>
           <textarea id="review" name="review" maxlength="600" minlength="10" required placeholder="Escribi tu rese&ntilde;a..." aria-describedby="review-error counter"></textarea>
           <div class="meta">
@@ -480,12 +486,14 @@
     const form = document.getElementById('review-form');
     const panel = document.getElementById('panel');
     const nameInput = document.getElementById('name');
+    const bookInput = document.getElementById('book');
     const review = document.getElementById('review');
     const submit = document.getElementById('submit');
     const counter = document.getElementById('counter');
     const statusText = document.getElementById('status');
     const ratingError = document.getElementById('rating-error');
     const nameError = document.getElementById('name-error');
+    const bookError = document.getElementById('book-error');
     const reviewError = document.getElementById('review-error');
     const thanks = document.getElementById('thanks');
     const again = document.getElementById('again');
@@ -497,10 +505,12 @@
     function update() {
       const text = review.value.trim();
       const hasName = nameInput.value.trim().length >= 2;
+      const hasBook = bookInput.value.trim().length >= 2;
       counter.textContent = review.value.length + ' / 600';
-      submit.disabled = !(rating() && hasName && text.length >= 10);
+      submit.disabled = !(rating() && hasName && hasBook && text.length >= 10);
       if (rating()) ratingError.textContent = '';
       if (hasName) nameError.textContent = '';
+      if (hasBook) bookError.textContent = '';
       if (text.length >= 10) reviewError.textContent = '';
       statusText.textContent = submit.disabled ? '' : 'Listo para enviar.';
     }
@@ -512,12 +522,14 @@
       event.preventDefault();
       const hasRating = Boolean(rating());
       const hasName = nameInput.value.trim().length >= 2;
+      const hasBook = bookInput.value.trim().length >= 2;
       const hasText = review.value.trim().length >= 10;
       ratingError.textContent = hasRating ? '' : 'Elegi una puntuacion.';
       nameError.textContent = hasName ? '' : 'Escribi tu nombre.';
+      bookError.textContent = hasBook ? '' : 'Escribi el titulo del libro.';
       reviewError.textContent = hasText ? '' : 'Escribi al menos 10 caracteres.';
 
-      if (!hasRating || !hasName || !hasText) {
+      if (!hasRating || !hasName || !hasBook || !hasText) {
         return;
       }
 
@@ -556,6 +568,7 @@
       submit.textContent = 'Publicar resena';
       ratingError.textContent = '';
       nameError.textContent = '';
+      bookError.textContent = '';
       reviewError.textContent = '';
       update();
       nameInput.focus();
