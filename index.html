@@ -252,11 +252,10 @@
       border-radius: 4px;
     }
 
+    input[type="text"],
     textarea {
       width: 100%;
-      min-height: 178px;
       padding: 18px;
-      resize: vertical;
       color: var(--text);
       border: 1px solid var(--line-white);
       border-radius: 12px;
@@ -266,10 +265,21 @@
       transition: border-color .18s ease, box-shadow .18s ease, background .18s ease;
     }
 
+    input[type="text"] {
+      height: 58px;
+    }
+
+    textarea {
+      min-height: 178px;
+      resize: vertical;
+    }
+
+    input[type="text"]::placeholder,
     textarea::placeholder {
       color: #676054;
     }
 
+    input[type="text"]:focus,
     textarea:focus {
       border-color: rgba(216,174,85,.62);
       background: #1b1913;
@@ -439,6 +449,12 @@
         </fieldset>
 
         <div>
+          <label for="name">Tu nombre</label>
+          <input type="text" id="name" name="name" maxlength="80" required placeholder="Escribi tu nombre..." autocomplete="name" aria-describedby="name-error">
+          <div class="meta"><span class="error" id="name-error" role="alert"></span></div>
+        </div>
+
+        <div>
           <label for="review">Tu opinion</label>
           <textarea id="review" name="review" maxlength="600" minlength="10" required placeholder="Escribi tu rese&ntilde;a..." aria-describedby="review-error counter"></textarea>
           <div class="meta">
@@ -463,11 +479,13 @@
   <script>
     const form = document.getElementById('review-form');
     const panel = document.getElementById('panel');
+    const nameInput = document.getElementById('name');
     const review = document.getElementById('review');
     const submit = document.getElementById('submit');
     const counter = document.getElementById('counter');
     const statusText = document.getElementById('status');
     const ratingError = document.getElementById('rating-error');
+    const nameError = document.getElementById('name-error');
     const reviewError = document.getElementById('review-error');
     const thanks = document.getElementById('thanks');
     const again = document.getElementById('again');
@@ -478,9 +496,11 @@
 
     function update() {
       const text = review.value.trim();
+      const hasName = nameInput.value.trim().length >= 2;
       counter.textContent = review.value.length + ' / 600';
-      submit.disabled = !(rating() && text.length >= 10);
+      submit.disabled = !(rating() && hasName && text.length >= 10);
       if (rating()) ratingError.textContent = '';
+      if (hasName) nameError.textContent = '';
       if (text.length >= 10) reviewError.textContent = '';
       statusText.textContent = submit.disabled ? '' : 'Listo para enviar.';
     }
@@ -491,11 +511,13 @@
     form.addEventListener('submit', async function (event) {
       event.preventDefault();
       const hasRating = Boolean(rating());
+      const hasName = nameInput.value.trim().length >= 2;
       const hasText = review.value.trim().length >= 10;
       ratingError.textContent = hasRating ? '' : 'Elegi una puntuacion.';
+      nameError.textContent = hasName ? '' : 'Escribi tu nombre.';
       reviewError.textContent = hasText ? '' : 'Escribi al menos 10 caracteres.';
 
-      if (!hasRating || !hasText) {
+      if (!hasRating || !hasName || !hasText) {
         return;
       }
 
@@ -533,9 +555,10 @@
       panel.classList.remove('sent');
       submit.textContent = 'Publicar resena';
       ratingError.textContent = '';
+      nameError.textContent = '';
       reviewError.textContent = '';
       update();
-      review.focus();
+      nameInput.focus();
     });
 
     update();
