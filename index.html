@@ -1316,7 +1316,7 @@
         <form class="review-form" id="reviewForm" action="https://formsubmit.co/francogugliemi@gmail.com" method="POST">
           <input type="hidden" name="_subject" value="Nueva reseña en Guglielmi Books">
           <input type="hidden" name="_template" value="table">
-          <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_next" value="https://francogug.github.io/guglielmi-books/?enviada=1#resena">
           <input type="text" name="_honey" tabindex="-1" autocomplete="off" style="display:none">
           <div class="field-grid">
             <div class="field">
@@ -1500,15 +1500,9 @@ const welcome = document.getElementById("welcome");
       });
     }
 
-    form.addEventListener("submit", async (event) => {
-      event.preventDefault();
-
+    form.addEventListener("submit", () => {
       const selectedRating = document.querySelector('input[name="rating"]:checked');
-
-      if (!selectedRating) {
-        alert("Elegí una valoración con estrellas.");
-        return;
-      }
+      if (!selectedRating) return;
 
       const reviewData = {
         name: document.getElementById("name").value.trim(),
@@ -1522,65 +1516,20 @@ const welcome = document.getElementById("welcome");
       submitButton.textContent = "Enviando...";
       message.classList.remove("show");
 
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 12000);
+      const reviews = getReviews();
+      reviews.push(reviewData);
 
       try {
-        const formData = new FormData(form);
-        formData.set("Nombre", reviewData.name);
-        formData.set("Email", reviewData.email || "No informado");
-        formData.set("Libro", reviewData.book);
-        formData.set("Valoracion", `${reviewData.rating} de 5 estrellas`);
-        formData.set("Resena", reviewData.review);
-        formData.set("_url", window.location.href);
-
-        const response = await fetch("https://formsubmit.co/ajax/francogugliemi@gmail.com", {
-          method: "POST",
-          headers: { "Accept": "application/json" },
-          body: formData,
-          signal: controller.signal
-        });
-
-        if (!response.ok) {
-          throw new Error("FormSubmit no aceptó el envío.");
-        }
-
-        const result = await response.json();
-        if (result.success === false) {
-          throw new Error(result.message || "No fue posible enviar la reseña.");
-        }
-
-        const reviews = getReviews();
-        reviews.push(reviewData);
-
-        try {
-          localStorage.setItem("guglielmiReviews", JSON.stringify(reviews));
-        } catch (error) {
-          console.warn("No fue posible guardar la reseña en este dispositivo.", error);
-        }
-
-        form.reset();
-        books.forEach((book) => book.classList.remove("active"));
-
-        openSuccessOverlay();
-
-        try {
-          renderReviews();
-        } catch (error) {
-          console.warn("No fue posible mostrar las reseñas guardadas.", error);
-        }
+        localStorage.setItem("guglielmiReviews", JSON.stringify(reviews));
       } catch (error) {
-        console.error("No fue posible enviar la reseña.", error);
-        message.textContent = error.name === "AbortError"
-          ? "El servicio está demorando. Esperá un momento e intentá nuevamente."
-          : "No se pudo enviar la reseña. Esperá un momento e intentá nuevamente.";
-        message.classList.add("show");
-      } finally {
-        clearTimeout(timeoutId);
-        submitButton.disabled = false;
-        submitButton.textContent = "Enviar reseña";
+        console.warn("No fue posible guardar la reseña en este dispositivo.", error);
       }
     });
+
+    if (new URLSearchParams(window.location.search).get("enviada") === "1") {
+      openSuccessOverlay();
+      history.replaceState({}, "", `${window.location.pathname}#resena`);
+    }
 
     if (closeSuccessOverlay) {
       closeSuccessOverlay.addEventListener("click", () => {
