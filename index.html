@@ -1526,10 +1526,10 @@ const welcome = document.getElementById("welcome");
         const response = await fetch("https://formsubmit.co/ajax/francogugliemi@gmail.com", {
           method: "POST",
           headers: {
-            "Content-Type": "application/json",
+            "Accept": "application/json",
             "Accept": "application/json"
           },
-          body: JSON.stringify({
+          body: new FormData(form) /*
             Nombre: reviewData.name,
             Email: reviewData.email || "No informado",
             Libro: reviewData.book,
@@ -1539,7 +1539,7 @@ const welcome = document.getElementById("welcome");
             _template: "table",
             _captcha: "false",
             _url: window.location.href
-          })
+          }) */
         });
 
         if (!response.ok) {
