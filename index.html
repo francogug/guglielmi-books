@@ -1394,7 +1394,7 @@
     <div class="success-modal" role="dialog" aria-modal="true" aria-labelledby="successTitle">
       <div class="success-icon">✓</div>
       <h4 id="successTitle">¡Gracias por tu reseña!</h4>
-      <p>La página funciona correctamente. El envío por correo todavía no está conectado.</p>
+      <p>Tu reseña fue enviada correctamente. ¡Gracias por compartir tu lectura!</p>
       <button class="success-button" id="closeSuccessOverlay" type="button">Escribir otra reseña</button>
     </div>
   </div>
@@ -1522,26 +1522,24 @@ const welcome = document.getElementById("welcome");
       submitButton.textContent = "Enviando...";
       message.classList.remove("show");
 
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 12000);
+
       try {
-        fetch("https://formsubmit.co/ajax/francogugliemi@gmail.com", {
+        const formData = new FormData(form);
+        formData.set("Nombre", reviewData.name);
+        formData.set("Email", reviewData.email || "No informado");
+        formData.set("Libro", reviewData.book);
+        formData.set("Valoracion", `${reviewData.rating} de 5 estrellas`);
+        formData.set("Resena", reviewData.review);
+        formData.set("_url", window.location.href);
+
+        const response = await fetch("https://formsubmit.co/ajax/francogugliemi@gmail.com", {
           method: "POST",
-          headers: {
-            "Accept": "application/json",
-            "Accept": "application/json"
-          },
-          body: new FormData(form) /*
-            Nombre: reviewData.name,
-            Email: reviewData.email || "No informado",
-            Libro: reviewData.book,
-            Valoracion: `${reviewData.rating} de 5 estrellas`,
-            Resena: reviewData.review,
-            _subject: "Nueva reseña en Guglielmi Books",
-            _template: "table",
-            _captcha: "false",
-            _url: window.location.href
-          }) */
+          headers: { "Accept": "application/json" },
+          body: formData,
+          signal: controller.signal
         });
-        const response = { ok: true, json: async () => ({ success: true }) };
 
         if (!response.ok) {
           throw new Error("FormSubmit no aceptó el envío.");
@@ -1573,9 +1571,12 @@ const welcome = document.getElementById("welcome");
         }
       } catch (error) {
         console.error("No fue posible enviar la reseña.", error);
-        message.textContent = "No se pudo enviar la reseña. Revisá tu conexión e intentá nuevamente.";
+        message.textContent = error.name === "AbortError"
+          ? "El servicio está demorando. Esperá un momento e intentá nuevamente."
+          : "No se pudo enviar la reseña. Esperá un momento e intentá nuevamente.";
         message.classList.add("show");
       } finally {
+        clearTimeout(timeoutId);
         submitButton.disabled = false;
         submitButton.textContent = "Enviar reseña";
       }
