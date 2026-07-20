@@ -106,7 +106,7 @@
       text-transform: uppercase;
     }
 
-    .welcome-inner h1 {
+    .welcome-title {
       font-family: Georgia, "Times New Roman", serif;
       font-size: clamp(3rem, 9vw, 7.2rem);
       font-weight: 500;
@@ -185,6 +185,58 @@
       font-weight: 500;
     }
 
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      list-style: none;
+    }
+
+    .nav-menu a {
+      position: relative;
+      color: rgba(247, 242, 232, .78);
+      font-size: .69rem;
+      font-weight: 800;
+      letter-spacing: .09em;
+      text-transform: uppercase;
+      transition: color .25s ease;
+    }
+
+    .nav-menu a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 100%;
+      bottom: -8px;
+      height: 1px;
+      background: var(--gold-light);
+      transition: right .25s ease;
+    }
+
+    .nav-menu a:hover,
+    .nav-menu a:focus-visible {
+      color: var(--gold-light);
+    }
+
+    .nav-menu a:hover::after,
+    .nav-menu a:focus-visible::after {
+      right: 0;
+    }
+
+    .menu-toggle {
+      display: none;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 10px 14px;
+      color: var(--gold-light);
+      background: rgba(255, 255, 255, .025);
+      font-size: .7rem;
+      font-weight: 900;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+
     .nav-link {
       padding: 11px 18px;
       border: 1px solid var(--line);
@@ -229,7 +281,7 @@
       text-transform: uppercase;
     }
 
-    .hero h2 {
+    .hero h1 {
       font-family: Georgia, "Times New Roman", serif;
       font-size: clamp(3.4rem, 9vw, 7.6rem);
       font-weight: 500;
@@ -237,7 +289,7 @@
       letter-spacing: -.055em;
     }
 
-    .hero h2 span {
+    .hero h1 span {
       display: block;
       color: var(--gold-light);
     }
@@ -304,6 +356,7 @@
       width: min(1180px, 90%);
       margin: auto;
       padding: 95px 0;
+      scroll-margin-top: 88px;
     }
 
     .section-heading {
@@ -337,6 +390,116 @@
 
     .upcoming-heading {
       margin-top: 72px;
+      scroll-margin-top: 110px;
+    }
+
+    .author-card {
+      display: grid;
+      grid-template-columns: minmax(240px, .7fr) 1.3fr;
+      gap: clamp(34px, 7vw, 86px);
+      align-items: center;
+      padding: clamp(28px, 5vw, 64px);
+      border: 1px solid var(--line);
+      border-radius: 32px;
+      background:
+        radial-gradient(circle at 15% 20%, rgba(213, 173, 85, .12), transparent 36%),
+        rgba(255, 255, 255, .022);
+      box-shadow: var(--shadow);
+    }
+
+    #autor:target .author-card {
+      animation: authorReveal .8s cubic-bezier(.2, .8, .2, 1) both;
+    }
+
+    @keyframes authorReveal {
+      from { opacity: 0; transform: translateY(24px); filter: blur(14px); }
+      to { opacity: 1; transform: translateY(0); filter: blur(0); }
+    }
+
+    .author-photo-ring {
+      width: min(100%, 340px);
+      aspect-ratio: 1;
+      margin: auto;
+      padding: 7px;
+      border: 1px solid var(--gold-light);
+      border-radius: 50%;
+      box-shadow: 0 0 0 10px rgba(213, 173, 85, .06), 0 24px 70px rgba(0, 0, 0, .5);
+    }
+
+    .author-photo-ring img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      object-position: 50% 58%;
+      border-radius: 50%;
+      filter: grayscale(1) contrast(1.04);
+    }
+
+    .author-copy small {
+      color: var(--gold-light);
+      font-size: .72rem;
+      font-weight: 800;
+      letter-spacing: .24em;
+      text-transform: uppercase;
+    }
+
+    .author-copy h3 {
+      margin-top: 12px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(2.8rem, 6vw, 5.3rem);
+      font-weight: 500;
+      line-height: .95;
+      letter-spacing: -.045em;
+    }
+
+    .author-copy p {
+      margin-top: 22px;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .author-quote {
+      padding-left: 18px;
+      border-left: 1px solid var(--gold);
+      color: var(--white) !important;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1.25rem;
+    }
+
+    .genres {
+      margin-top: 24px;
+      color: rgba(247, 242, 232, .78);
+      font-size: .84rem;
+      font-weight: 700;
+      line-height: 1.8;
+      letter-spacing: .04em;
+    }
+
+    .genres strong { color: var(--gold-light); }
+
+    .contact-card {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 28px;
+      padding: clamp(28px, 5vw, 54px);
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      background: linear-gradient(135deg, rgba(213, 173, 85, .09), rgba(255, 255, 255, .015));
+    }
+
+    .contact-card h3 {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(2.2rem, 5vw, 4rem);
+      font-weight: 500;
+    }
+
+    .contact-card p {
+      max-width: 620px;
+      margin-top: 12px;
+      color: var(--muted);
+      line-height: 1.7;
     }
 
     /* LIBROS */
@@ -600,6 +763,8 @@
 
     .star-rating input{
       position:absolute;
+      width:1px;
+      height:1px;
       opacity:0;
       pointer-events:none;
     }
@@ -733,6 +898,45 @@
     }
 
     @media (max-width: 980px) {
+      .menu-toggle {
+        display: inline-flex;
+        align-items: center;
+      }
+
+      .nav-menu {
+        position: absolute;
+        top: calc(100% + 1px);
+        left: 5%;
+        right: 5%;
+        display: grid;
+        gap: 0;
+        padding: 12px;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: rgba(7, 7, 7, .96);
+        backdrop-filter: blur(20px);
+        box-shadow: var(--shadow);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px);
+        transition: opacity .28s ease, transform .28s ease, visibility .28s ease;
+      }
+
+      .nav-menu.open {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+
+      .nav-menu a {
+        display: block;
+        padding: 14px 12px;
+        border-bottom: 1px solid rgba(213, 173, 85, .1);
+      }
+
+      .nav-menu li:last-child a { border-bottom: 0; }
+      .nav-menu a::after { display: none; }
+
       .books {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
@@ -748,15 +952,27 @@
       .reviews-list {
         grid-template-columns: 1fr;
       }
+
+      .author-card {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      .author-quote {
+        padding-left: 0;
+        border-left: 0;
+      }
     }
 
     @media (max-width: 640px) {
       .nav {
         min-height: 68px;
+        gap: 12px;
       }
 
       .brand {
-        font-size: .85rem;
+        max-width: 210px;
+        font-size: .78rem;
       }
 
       .nav-link {
@@ -782,6 +998,17 @@
       .review-intro {
         padding: 24px;
         border-radius: 22px;
+      }
+
+      .field input,
+      .field select,
+      .field textarea {
+        min-width: 0;
+      }
+
+      .contact-card {
+        align-items: flex-start;
+        flex-direction: column;
       }
     }
 
@@ -1189,7 +1416,7 @@
   <div class="welcome" id="welcome">
     <div class="welcome-inner">
       <span>Bienvenido</span>
-      <h1>Guglielmi<br>Books</h1>
+      <div class="welcome-title">Guglielmi<br>Books</div>
       <p>Original Edition</p>
     </div>
   </div>
@@ -1197,7 +1424,17 @@
   <header class="header">
     <nav class="nav">
       <a class="brand" href="#inicio">GUGLIELMI BOOKS · <strong>ORIGINAL EDITION</strong> ·</a>
-      <a class="nav-link" href="#resena">Dejar reseña</a>
+      <button class="menu-toggle" id="menuToggle" type="button" aria-expanded="false" aria-controls="navMenu">
+        ☰ Menú
+      </button>
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="#inicio">Inicio</a></li>
+        <li><a href="#libros">Libros</a></li>
+        <li><a href="#proximamente">Próximamente</a></li>
+        <li><a href="#resena">Reseñas</a></li>
+        <li><a href="#autor">Sobre el autor</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
     </nav>
   </header>
 
@@ -1205,7 +1442,7 @@
     <section class="hero" id="inicio">
       <div class="hero-inner">
         <p class="kicker">Libros · Lectores · Opiniones</p>
-        <h2>Tu lectura también <span>forma parte de la historia.</span></h2>
+        <h1>Tu lectura también <span>forma parte de la historia.</span></h1>
         <p class="hero-description">
           Una página simple, clara y elegante para que los lectores compartan
           sus reseñas y valoraciones sobre cada obra de Guglielmi Books.
@@ -1284,7 +1521,7 @@
         </article>
       </div>
 
-      <div class="section-heading upcoming-heading">
+      <div class="section-heading upcoming-heading" id="proximamente">
         <small>Original Edition</small>
         <h3>Próximas.</h3>
         <p>Nuevas historias que muy pronto formarán parte de Guglielmi Books.</p>
@@ -1407,6 +1644,55 @@
       <div class="reviews-list" id="reviewsList"></div>
     </section>
 
+    <section class="section" id="autor">
+      <div class="author-card">
+        <div class="author-photo-ring">
+          <img src="fotos/franco-guglielmi.jpg" alt="Retrato del escritor Franco Guglielmi">
+        </div>
+
+        <div class="author-copy">
+          <small>Sobre el autor</small>
+          <h3>Franco Guglielmi</h3>
+          <p>
+            Franco Guglielmi es un escritor de Córdoba, Argentina. Le gusta observar
+            a las personas, conocer diferentes historias de vida y transformar sus
+            ideas en novelas. Escribe sobre cualquier tema que despierte su imaginación.
+          </p>
+          <p>
+            Es una persona sorda y utiliza un implante coclear. Su manera de vivir,
+            sentir y observar el mundo forma parte de su identidad y de su inspiración
+            como escritor.
+          </p>
+          <p class="author-quote">
+            “Cualquier persona, lugar o experiencia puede convertirse en el comienzo
+            de una nueva historia.”
+          </p>
+          <div class="genres">
+            <strong>Géneros:</strong> Misterio · Suspenso · Terror · Drama · Romance ·
+            Aventura · Ciencia ficción · Comedia y otros géneros.
+          </div>
+          <div class="hero-actions" style="justify-content:flex-start">
+            <a class="button button-gold" href="#libros">Ver mis libros</a>
+            <a class="button button-dark" href="#contacto">Contacto</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="contacto">
+      <div class="contact-card">
+        <div>
+          <small class="kicker">Contacto</small>
+          <h3>Hablemos de historias.</h3>
+          <p>
+            Para consultas, comentarios o novedades sobre Guglielmi Books,
+            podés escribir directamente por correo electrónico.
+          </p>
+        </div>
+        <a class="button button-gold" href="mailto:francogugliemi@gmail.com">Escribir un correo</a>
+      </div>
+    </section>
+
   </main>
 
 <div class="success-overlay" id="successOverlay" aria-hidden="true">
@@ -1435,10 +1721,38 @@ const welcome = document.getElementById("welcome");
     const successOverlay = document.getElementById("successOverlay");
     const closeSuccessOverlay = document.getElementById("closeSuccessOverlay");
     const successBackdrop = document.getElementById("successBackdrop");
+    const menuToggle = document.getElementById("menuToggle");
+    const navMenu = document.getElementById("navMenu");
 
     setTimeout(() => {
       if (welcome) welcome.remove();
     }, 3800);
+
+    function closeMenu() {
+      if (!menuToggle || !navMenu) return;
+      navMenu.classList.remove("open");
+      menuToggle.setAttribute("aria-expanded", "false");
+    }
+
+    if (menuToggle && navMenu) {
+      menuToggle.addEventListener("click", () => {
+        const willOpen = !navMenu.classList.contains("open");
+        navMenu.classList.toggle("open", willOpen);
+        menuToggle.setAttribute("aria-expanded", String(willOpen));
+      });
+
+      navMenu.querySelectorAll("a").forEach((link) => {
+        link.addEventListener("click", closeMenu);
+      });
+
+      document.addEventListener("click", (event) => {
+        if (!event.target.closest(".nav")) closeMenu();
+      });
+
+      window.addEventListener("resize", () => {
+        if (window.innerWidth > 980) closeMenu();
+      });
+    }
 
     books.forEach((book) => {
       const handleBook = () => {
