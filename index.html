@@ -335,6 +335,10 @@
       line-height: 1.75;
     }
 
+    .upcoming-heading {
+      margin-top: 72px;
+    }
+
     /* LIBROS */
     .books {
       display: grid;
@@ -1227,7 +1231,7 @@
 
       <div class="banner-library">
         <article class="story-banner story-banner-mirilla" data-book="La Mirilla" tabindex="0">
-          <img src="fotos/la-mirilla.png" alt="La Mirilla — El misterio del Edificio Río II">
+          <img src="la-mirilla.png" alt="La Mirilla — El misterio del Edificio Río II">
 
           <div class="story-overlay">
             <small>Thriller · Crimen</small>
@@ -1276,6 +1280,28 @@
               y una presencia silenciosa que los observa desde la oscuridad.
             </p>
             <span>Tocá otra vez para dejar tu reseña →</span>
+          </div>
+        </article>
+      </div>
+
+      <div class="section-heading upcoming-heading">
+        <small>Original Edition</small>
+        <h3>Próximas.</h3>
+        <p>Nuevas historias que muy pronto formarán parte de Guglielmi Books.</p>
+      </div>
+
+      <div class="banner-library">
+        <article class="story-banner story-banner-upcoming" data-book="P.F.: Bienvenidos a Córdoba" data-upcoming="true" tabindex="0">
+          <img src="pf-bienvenidos-a-cordoba.png" alt="P.F.: Bienvenidos a Córdoba — Próximamente">
+
+          <div class="story-overlay">
+            <small>Próximamente · Thriller psicológico</small>
+            <h4>P.F.: Bienvenidos a Córdoba</h4>
+            <p>
+              Una nueva historia oscura se aproxima. Muy pronto vas a descubrir
+              qué se esconde detrás de esa mirada.
+            </p>
+            <span>Próximamente en Guglielmi Books</span>
           </div>
         </article>
       </div>
@@ -1419,6 +1445,11 @@ const welcome = document.getElementById("welcome");
         const wasActive = book.classList.contains("active");
 
         books.forEach((item) => item.classList.remove("active"));
+
+        if (book.dataset.upcoming === "true") {
+          if (!wasActive) book.classList.add("active");
+          return;
+        }
 
         if (!wasActive) {
           book.classList.add("active");
